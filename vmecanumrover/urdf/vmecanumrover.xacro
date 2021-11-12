@@ -158,7 +158,7 @@
       </inertial> 
     </link>
 
-    <xacro:dummy_motor prefix="${prefix}_motor" parent="${prefix}_sus_link" mesh="mecanum_wheel"/>
+    <xacro:dummy_motor prefix="${prefix}_motor" parent="${prefix}_base_link" mesh="mecanum_wheel"/>
     <xacro:dummy_barrels prefix="${prefix}" rot="1"/>
 
     <transmission name="${prefix}_base_joint">
