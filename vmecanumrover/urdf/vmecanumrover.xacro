@@ -17,45 +17,12 @@
 			 izz="${(mass*(height*height+width*width))/12}" />
   </xacro:macro>
 
-  <xacro:macro name="sus" params="prefix">
-    <joint name="${prefix}_sus_joint" type="prismatic">
-      <parent link="${prefix}_base_link"/>
-      <child  link="${prefix}_sus_link"/>
-      <limit lower="-0.02" upper="0.02" effort="100" velocity="1.0" />
-      <axis xyz="0 0 1"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <dynamics damping="0.01"/>
-    </joint>
-    <transmission name="${prefix}_sus_trans">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${prefix}_sus_joint">
-          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="${prefix}_sus_motor">
-        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        <mechanismReduction>1</mechanismReduction>
-      </actuator>
-    </transmission>
-    <gazebo reference="${prefix}_sus_joint">
-      <kp>50000</kp>
-      <kd>500</kd>
-    </gazebo>
-    <link name="${prefix}_sus_link">
-      <inertial>
-        <mass value="0.010"/>
-        <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001"/>
-      </inertial>
-    </link>
-
-  </xacro:macro>
-
-  <xacro:macro name="barrel" params="prefix num dir rot">
-    <joint name="${prefix}_barrel${num}_joint" type="continuous">
+  <xacro:macro name="dummy_barrel" params="prefix num dir rot">
+    <joint name="${prefix}_barrel${num}_joint" type="fixed">
       <parent link="${prefix}_motor_shaft_link"/>
       <child link="${prefix}_barrel${num}_link"/>
       <origin rpy="${pi/4*rot} 0 ${radians(dir)}" xyz="${0.0666389*cos(radians(dir))} ${0.0666389*sin(radians(dir))} 0"/>
       <axis xyz="0 0 1"/>
-      <dynamics damping="0.001"  friction="0.0"/>
     </joint>
     <link name="${prefix}_barrel${num}_link">
       <visual>
@@ -64,45 +31,35 @@
         </geometry>
         <material name="black"/>
       </visual>
-      <collision>
-        <geometry>
-          <cylinder radius="0.00956" length="0.0381" />
-        </geometry>
-      </collision>
-      <inertial>
-        <xacro:cylinder_inertial mass="0.01225" radius="0.00956" length="0.0381" />
-      </inertial>  
-
     </link>
+    <inertial>
+      <xacro:cylinder_inertial mass="0.01225" radius="0.00956" length="0.0381" />
+    </inertial>  
     <gazebo reference="${prefix}_barrel${num}_link">
       <material>Gazebo/Black</material>
-      <mu1 value="2.5" />
-      <mu2 value="2.5" />
-      <kp value="50000" />
-      <kd value="100" />
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="barrels" params="prefix rot ">
-    <xacro:barrel prefix="${prefix}"  num="0" dir="0" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="1" dir="24" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="2" dir="48" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="3" dir="72" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="4" dir="96" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="5" dir="120" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="6" dir="144" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="7" dir="168" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="8" dir="192" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="9" dir="216" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="10" dir="240" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="11" dir="264" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="12" dir="288" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="13" dir="312" rot="${rot}"/>
-    <xacro:barrel prefix="${prefix}"  num="14" dir="336" rot="${rot}"/>
+  <xacro:macro name="dummy_barrels" params="prefix rot ">
+    <xacro:dummy_barrel prefix="${prefix}"  num="0" dir="0" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="1" dir="24" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="2" dir="48" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="3" dir="72" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="4" dir="96" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="5" dir="120" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="6" dir="144" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="7" dir="168" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="8" dir="192" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="9" dir="216" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="10" dir="240" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="11" dir="264" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="12" dir="288" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="13" dir="312" rot="${rot}"/>
+    <xacro:dummy_barrel prefix="${prefix}"  num="14" dir="336" rot="${rot}"/>
   </xacro:macro>
 
 
-  <xacro:macro name="motor" params="prefix parent mesh">
+  <xacro:macro name="dummy_motor" params="prefix parent mesh">
     <joint name="${prefix}_joint" type="fixed">
       <parent link="${parent}"/>
       <child  link="${prefix}_body_link"/>
@@ -115,40 +72,17 @@
         </geometry>
         <material name="gray"/>
       </visual>
-      <collision>
-        <origin rpy="0 ${radians(90)} 0" xyz="-0.06075 0 0"/>
-        <geometry>
-          <cylinder radius="0.02225" length="0.1215" />
-        </geometry>
-      </collision>
-      <inertial>
-        <xacro:cylinder_inertial mass="0.880" radius="0.02225" length="0.1215" />
-      </inertial>  
-
     </link>
+    <inertial>
+      <xacro:cylinder_inertial mass="0.880" radius="0.02225" length="0.1215" />
+    </inertial>  
     <gazebo reference="${prefix}_body_link">
       <material>Gazebo/Gray</material>
     </gazebo>
-
-    <joint name="${prefix}_shaft_joint" type="continuous">
+    <joint name="${prefix}_shaft_joint" type="fixed">
       <parent link="${prefix}_body_link"/>
       <child  link="${prefix}_shaft_link"/>
-      <origin rpy="0 ${radians(90)} 0" xyz="0 0 0"/>
-      <axis xyz="0 0 -1"/>
-      <!-- <limit velocity="40.0" effort="3.0" /> -->
-      <dynamics damping="0.01" friction="0.0"/>
     </joint>
-    <transmission name="${prefix}_shaft_trans">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${prefix}_shaft_joint">
-        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="${prefix}_shaft_motor">
-        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        <mechanicalReduction>1</mechanicalReduction>
-      </actuator>
-    </transmission>
-
     <link name="${prefix}_shaft_link">
       <visual>
         <geometry>
@@ -156,18 +90,6 @@
         </geometry>
         <material name="gray"/>
       </visual>
-      <collision>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
-        <geometry>
-          <!-- <cylinder radius="0.048" length="0.04572" /> -->
-          <cylinder radius="0.070" length="0.04572" />
-          <!-- <mesh filename="package://mecanumrover_samples/meshes/stl/${mesh}.stl" />  -->
-        </geometry>
-      </collision>
-      <inertial>
-        <xacro:cylinder_inertial mass="0.43525" radius="0.048" length="0.04572" />
-      </inertial>  
-
     </link>
     <gazebo reference="${prefix}_shaft_link">
       <material>Gazebo/White</material>
@@ -178,43 +100,70 @@
 
   <xacro:macro name="omni_wheel_set_l" params="prefix parent">
 
-    <joint name="${prefix}_base_joint" type="fixed">
+    <joint name="${prefix}_base_joint" type="continuous">
       <parent link="${parent}"/>
       <child link="${prefix}_base_link"/>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </joint>
     <link name="${prefix}_base_link" >
+      <collision>
+        <geometry>
+          <cylinder radius="0.75" length="0.002"/>
+        </geometry>
+      </collision>
       <inertial>
         <mass value="0.010"/>
         <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
       </inertial> 
     </link>
+    <xacro:dummy_motor prefix="${prefix}_motor" parent="${prefix}_base_link" mesh="mecanum_wheel_rev"/>
+    <xacro:dummy_barrels prefix="${prefix}" rot="-1"/>
 
-    <xacro:sus prefix="${prefix}"/>
-    <xacro:motor prefix="${prefix}_motor" parent="${prefix}_sus_link" mesh="mecanum_wheel_rev"/>
-    <xacro:barrels prefix="${prefix}" rot="-1"/>
 
+
+    <transmission name="${prefix}_base_joint">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}_base_link">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}_base_actuator">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
   </xacro:macro>
 
 
   <xacro:macro name="omni_wheel_set_r" params="prefix parent">
 
-    <joint name="${prefix}_base_joint" type="fixed">
+    <joint name="${prefix}_base_joint" type="continuous">
       <parent link="${parent}"/>
       <child link="${prefix}_base_link"/>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </joint>
     <link name="${prefix}_base_link" >
+      <collision>
+        <geometry>
+          <cylinder radius="0.75" length="0.002"/>
+        </geometry>
+      </collision>
       <inertial>
         <mass value="0.010"/>
         <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
       </inertial> 
     </link>
 
-    <xacro:sus prefix="${prefix}"/>
-    <xacro:motor prefix="${prefix}_motor" parent="${prefix}_sus_link" mesh="mecanum_wheel"/>
-    <xacro:barrels prefix="${prefix}" rot="1"/>
+    <xacro:dummy_motor prefix="${prefix}_motor" parent="${prefix}_sus_link" mesh="mecanum_wheel"/>
+    <xacro:dummy_barrels prefix="${prefix}" rot="1"/>
 
+    <transmission name="${prefix}_base_joint">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}_base_link">
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}_base_actuator">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
   </xacro:macro>
 
 
