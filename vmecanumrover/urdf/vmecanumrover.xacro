@@ -107,6 +107,7 @@
     </joint>
     <link name="${prefix}_base_link" >
       <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
         <geometry>
           <cylinder radius="0.75" length="0.002"/>
         </geometry>
@@ -130,6 +131,10 @@
         <mechanicalReduction>1</mechanicalReduction>
       </actuator>
     </transmission>
+    <gazebo reference="${prefix}_base_link">
+      <mu1> 0.0 </mu1>
+      <mu2> 0.0 </mu2>
+    </gazebo>
   </xacro:macro>
 
 
@@ -142,6 +147,7 @@
     </joint>
     <link name="${prefix}_base_link" >
       <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
         <geometry>
           <cylinder radius="0.75" length="0.002"/>
         </geometry>
@@ -164,6 +170,10 @@
         <mechanicalReduction>1</mechanicalReduction>
       </actuator>
     </transmission>
+    <gazebo reference="${prefix}_base_link">
+      <mu1> 0.0 </mu1>
+      <mu2> 0.0 </mu2>
+    </gazebo>
   </xacro:macro>
 
 
