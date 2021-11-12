@@ -39,8 +39,19 @@
               bumper_controller3 bumper_controller4 bumper_controller5
               bumper_controller6 bumper_controller7 bumper_controller8
               bumper_controller9 bumper_controller10 bumper_controller11
-              wyrelesscharger_controller
               joint_state_controller"/>
+
+  <!-- <node name="controller_spawner" pkg="controller_manager"
+        type="spawner" respawn="false"
+        output="screen" ns="/vmecanumrover"
+        args="joint_controller0 joint_controller1 joint_controller2 joint_controller3 
+              sus_controller0 sus_controller1 sus_controller2 sus_controller3
+              bumper_controller0 bumper_controller1 bumper_controller2
+              bumper_controller3 bumper_controller4 bumper_controller5
+              bumper_controller6 bumper_controller7 bumper_controller8
+              bumper_controller9 bumper_controller10 bumper_controller11
+              wyrelesscharger_controller
+              joint_state_controller"/> -->
 
   <node name="vmecanum_twist" pkg="mecanumrover_samples" type="vmecanum_twist" output="screen">
     <param name="gain" value="16.5"/>
