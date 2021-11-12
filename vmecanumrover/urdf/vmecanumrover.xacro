@@ -208,7 +208,7 @@
     <origin xyz="-0.115 0.132 0.076" rpy="0 0 0"/>
   </joint>
   <link name="wheel2_attach_link" />
-  <xacro:omni_wheel_set_r prefix="wheel2" parent="wheel2_attach_link" />
+  <xacro:omni_wheel_set_l prefix="wheel2" parent="wheel2_attach_link" />
 
   <joint name="wheel3_attach_joint" type="fixed">
     <parent link="body_link"/>
@@ -216,7 +216,7 @@
     <origin xyz="-0.115 -0.132 0.076" rpy="0 0 0"/>
   </joint>
   <link name="wheel3_attach_link" />
-  <xacro:omni_wheel_set_l prefix="wheel3" parent="wheel3_attach_link" />
+  <xacro:omni_wheel_set_r prefix="wheel3" parent="wheel3_attach_link" />
 
   <!-- option parts -->
   <xacro:macro name="optionattachboard" params="prefix xyz z_dir">
