@@ -11,10 +11,6 @@ int main(int argc, char** argv)
   ros::NodeHandle pn("~");
 
   // publish
-  ros::Publisher pub0 = n.advertise<std_msgs::Float64>("sus0", 10);
-  ros::Publisher pub1 = n.advertise<std_msgs::Float64>("sus1", 10);
-  ros::Publisher pub2 = n.advertise<std_msgs::Float64>("sus2", 10);
-  ros::Publisher pub3 = n.advertise<std_msgs::Float64>("sus3", 10);
 
   ros::Publisher pub_bumper0 = n.advertise<std_msgs::Float64>("/vmecanumrover/bumper_controller0/command", 10);
   ros::Publisher pub_bumper1 = n.advertise<std_msgs::Float64>("/vmecanumrover/bumper_controller1/command", 10);
@@ -45,10 +41,6 @@ int main(int argc, char** argv)
   {
     std_msgs::Float64 command_pos;
     command_pos.data = (liftup_step-i) * (0.02/liftup_step);
-    pub0.publish(command_pos);
-    pub1.publish(command_pos);
-    pub2.publish(command_pos);
-    pub3.publish(command_pos);
     if(command_pos.data<=0) break;
     i++;
 

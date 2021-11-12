@@ -141,8 +141,6 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(mecanum_pub_odom src/pub_odom.cpp)
 add_executable(mecanum_joycon   src/joycon.cpp)
-add_executable(vmecanum_twist src/vmecanum_twist.cpp)
-add_executable(vmecanum_odom src/vmecanum_odom.cpp)
 add_executable(vmecanum_sensor src/vmecanum_sensor.cpp)
 add_executable(vmecanum_liftup_sus src/vmecanum_liftup.cpp)
 
@@ -164,12 +162,6 @@ target_link_libraries(mecanum_joycon
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(vmecanum_twist
-  ${catkin_LIBRARIES}
-)
-target_link_libraries(vmecanum_odom
-  ${catkin_LIBRARIES}
-)
 target_link_libraries(vmecanum_sensor
   ${catkin_LIBRARIES}
 )

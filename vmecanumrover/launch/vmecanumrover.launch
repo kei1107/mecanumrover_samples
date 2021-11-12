@@ -26,7 +26,6 @@
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model vmecanumrover" />
 
   <rosparam command="load" file="$(find mecanumrover_samples)/configuration_files/vmecanumrover_move_controller.yaml" ns="vmecanumrover"/>  
-  <rosparam command="load" file="$(find mecanumrover_samples)/configuration_files/vmecanumrover_sus_controller.yaml" ns="vmecanumrover"/>  
   <rosparam command="load" file="$(find mecanumrover_samples)/configuration_files/vmecanumrover_bumper_controller.yaml" ns="vmecanumrover"/>  
   <rosparam command="load" file="$(find mecanumrover_samples)/configuration_files/vmecanumrover_wyrelesscharger_controller.yaml" ns="vmecanumrover"/>  
   <rosparam command="load" file="$(find mecanumrover_samples)/configuration_files/vmecanumrover_joint_state_controller.yaml" ns="vmecanumrover"/>  
@@ -34,7 +33,6 @@
         type="spawner" respawn="false"
         output="screen" ns="/vmecanumrover"
         args="joint_controller0 joint_controller1 joint_controller2 joint_controller3 
-              sus_controller0 sus_controller1 sus_controller2 sus_controller3
               bumper_controller0 bumper_controller1 bumper_controller2
               bumper_controller3 bumper_controller4 bumper_controller5
               bumper_controller6 bumper_controller7 bumper_controller8
@@ -45,7 +43,6 @@
         type="spawner" respawn="false"
         output="screen" ns="/vmecanumrover"
         args="joint_controller0 joint_controller1 joint_controller2 joint_controller3 
-              sus_controller0 sus_controller1 sus_controller2 sus_controller3
               bumper_controller0 bumper_controller1 bumper_controller2
               bumper_controller3 bumper_controller4 bumper_controller5
               bumper_controller6 bumper_controller7 bumper_controller8
@@ -97,11 +94,6 @@
     <remap from="sn11/state" to="/vmecanumrover/bumper_controller11/state" />
   </node>
 
-  <node name="vmecanum_liftup_sus" pkg="mecanumrover_samples" type="vmecanum_liftup_sus" respawn="false" output="screen">
-    <remap from="sus0" to="/vmecanumrover/sus_controller0/command" />
-    <remap from="sus1" to="/vmecanumrover/sus_controller1/command" />
-    <remap from="sus2" to="/vmecanumrover/sus_controller2/command" />
-    <remap from="sus3" to="/vmecanumrover/sus_controller3/command" />
-  </node>
+  <node name="vmecanum_liftup_sus" pkg="mecanumrover_samples" type="vmecanum_liftup_sus" respawn="false" output="screen"/>
 
 </launch>
