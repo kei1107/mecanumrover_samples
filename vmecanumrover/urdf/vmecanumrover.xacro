@@ -22,7 +22,6 @@
       <parent link="${prefix}_motor_shaft_link"/>
       <child link="${prefix}_barrel${num}_link"/>
       <origin rpy="${pi/4*rot} 0 ${radians(dir)}" xyz="${0.0666389*cos(radians(dir))} ${0.0666389*sin(radians(dir))} 0"/>
-      <axis xyz="0 0 1"/>
     </joint>
     <link name="${prefix}_barrel${num}_link">
       <visual>
@@ -85,13 +84,12 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="omni_wheel_set_l" params="prefix parent">
-
+  <xacro:macro name="omni_wheel_set_l" params="prefix parent *joint_origin *joint_axis">
     <joint name="${prefix}_wheel_joint" type="continuous">
       <parent link="${parent}"/>
       <child link="${prefix}_wheel_link"/>
-      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
-      <axis xyz="0 1 0"/>
+      <xacro:insert_block name="joint_origin"/>
+      <xacro:insert_block name="joint_axis"/>
     </joint>
     <link name="${prefix}_wheel_link" >
       <collision>
@@ -113,8 +111,8 @@
       </actuator>
     </transmission>
     <gazebo reference="${prefix}_wheel_link">
-      <mu1> 0.0 </mu1>
-      <mu2> 0.0 </mu2>
+      <mu1> 1.0 </mu1>
+      <mu2> 1.0 </mu2>
     </gazebo>
 
     <xacro:dummy_motor prefix="${prefix}_motor" parent="${prefix}_wheel_link" mesh="mecanum_wheel_rev"/>
@@ -122,12 +120,12 @@
   </xacro:macro>
 
 
-  <xacro:macro name="omni_wheel_set_r" params="prefix parent">
-    <joint name="${prefix}_wheel_joint" type="fixed">
+  <xacro:macro name="omni_wheel_set_r" params="prefix parent *joint_origin *joint_axis">
+    <joint name="${prefix}_wheel_joint" type="continuous">
       <parent link="${parent}"/>
       <child link="${prefix}_wheel_link"/>
-      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
-      <!-- <axis xyz="0 1 0"/> -->
+      <xacro:insert_block name="joint_origin"/>
+      <xacro:insert_block name="joint_axis"/>
     </joint>
     <link name="${prefix}_wheel_link" >
       <collision>
@@ -150,8 +148,8 @@
       </actuator>
     </transmission>
     <gazebo reference="${prefix}_wheel_link">
-      <mu1> 0.0 </mu1>
-      <mu2> 0.0 </mu2>
+      <mu1> 1.0 </mu1>
+      <mu2> 1.0 </mu2>
     </gazebo>
 
     <xacro:dummy_motor prefix="${prefix}_motor" parent="${prefix}_wheel_link" mesh="mecanum_wheel"/>
@@ -185,38 +183,25 @@
     <material>Gazebo/White</material>
   </gazebo>
 
-  <joint name="wheel0_attach_joint" type="fixed">
-    <parent link="body_link"/>
-    <child  link="wheel0_attach_link"/>
-    <origin xyz="0.115 0.132 0.076" rpy="0 0 0"/>
-  </joint>
-  <link name="wheel0_attach_link" />
-  <xacro:omni_wheel_set_l prefix="wheel0" parent="wheel0_attach_link" />
+  <xacro:omni_wheel_set_l prefix="wheel0" parent="body_link">
+    <origin xyz="0.115 0.132 0.076" rpy="${pi/2} 0 0"/>
+    <axis xyz="0 0 1"/>
+  </xacro:omni_wheel_set_l>
 
-  <joint name="wheel1_attach_joint" type="fixed">
-    <parent link="body_link"/>
-    <child  link="wheel1_attach_link"/>
-    <origin xyz="0.115 -0.132 0.076" rpy="0 0 0"/>
-  </joint>
-  <link name="wheel1_attach_link" />
-  <xacro:omni_wheel_set_r prefix="wheel1" parent="wheel1_attach_link" />
+  <xacro:omni_wheel_set_r prefix="wheel1" parent="body_link">
+    <origin xyz="0.115 -0.132 0.076" rpy="${pi/2} 0 0"/>
+    <axis xyz="0 0 1"/>
+  </xacro:omni_wheel_set_r>
 
+  <xacro:omni_wheel_set_l prefix="wheel2" parent="body_link">
+    <origin xyz="-0.115 0.132 0.076" rpy="${pi/2} 0 0"/>
+    <axis xyz="0 0 1"/>
+  </xacro:omni_wheel_set_l>
 
-  <joint name="wheel2_attach_joint" type="fixed">
-    <parent link="body_link"/>
-    <child  link="wheel2_attach_link"/>
-    <origin xyz="-0.115 0.132 0.076" rpy="0 0 0"/>
-  </joint>
-  <link name="wheel2_attach_link" />
-  <xacro:omni_wheel_set_l prefix="wheel2" parent="wheel2_attach_link" />
-
-  <joint name="wheel3_attach_joint" type="fixed">
-    <parent link="body_link"/>
-    <child  link="wheel3_attach_link"/>
-    <origin xyz="-0.115 -0.132 0.076" rpy="0 0 0"/>
-  </joint>
-  <link name="wheel3_attach_link" />
-  <xacro:omni_wheel_set_r prefix="wheel3" parent="wheel3_attach_link" />
+  <xacro:omni_wheel_set_r prefix="wheel3" parent="body_link">
+    <origin xyz="-0.115 -0.132 0.076" rpy="${pi/2} 0 0"/>
+    <axis xyz="0 0 1"/>
+  </xacro:omni_wheel_set_r>
 
   <!-- option parts -->
   <xacro:macro name="optionattachboard" params="prefix xyz z_dir">

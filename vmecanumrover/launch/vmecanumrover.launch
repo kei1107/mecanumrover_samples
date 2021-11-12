@@ -17,30 +17,25 @@
 
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model vmecanumrover" />
 
-  <rosparam command="load" file="$(find mecanumrover_samples)/configuration_files/vmecanumrover_move_controller.yaml" ns="vmecanumrover"/>  
+  <rosparam command="load" file="$(find mecanumrover_samples)/configuration_files/vmecanumrover_move_controller.yaml"/>  
   <rosparam command="load" file="$(find mecanumrover_samples)/configuration_files/vmecanumrover_bumper_controller.yaml" ns="vmecanumrover"/>  
   <rosparam command="load" file="$(find mecanumrover_samples)/configuration_files/vmecanumrover_wyrelesscharger_controller.yaml" ns="vmecanumrover"/>  
-  <rosparam command="load" file="$(find mecanumrover_samples)/configuration_files/vmecanumrover_joint_state_controller.yaml" ns="vmecanumrover"/>  
   <node name="controller_spawner" pkg="controller_manager"
         type="spawner" respawn="false"
-        output="screen" ns="/vmecanumrover"
-        args=" 
+        output="screen" ns="vmecanumrover"
+        args="joint_state_controller mecanum_drive_controller
               bumper_controller0 bumper_controller1 bumper_controller2
               bumper_controller3 bumper_controller4 bumper_controller5
               bumper_controller6 bumper_controller7 bumper_controller8
-              bumper_controller9 bumper_controller10 bumper_controller11
-              joint_state_controller"/>
-<!-- mecanum_drive_controller -->
-  <!-- <node name="controller_spawner" pkg="controller_manager"
-        type="spawner" respawn="false"
-        output="screen" ns="/vmecanumrover"
-        args="mecanum_drive_controller 
-              bumper_controller0 bumper_controller1 bumper_controller2
-              bumper_controller3 bumper_controller4 bumper_controller5
-              bumper_controller6 bumper_controller7 bumper_controller8
-              bumper_controller9 bumper_controller10 bumper_controller11
-              wyrelesscharger_controller
-              joint_state_controller"/> -->
+              bumper_controller9 bumper_controller10 bumper_controller11"/>
+              <!-- wyrelesscharger_controller /> -->
+
+  <node pkg="topic_tools" type="relay" name="cmd_vel_relay"
+        args="/rover_twist /vmecanumrover/mecanum_drive_controller/cmd_vel" />
+
+  <node pkg="topic_tools" type="relay" name="odom_relay"
+        args="/vmecanumrover/mecanum_drive_controller/odom /rover_odo" />
+
 
   <node name="vmecanum_sensor" pkg="mecanumrover_samples" type="vmecanum_sensor" output="screen">
     <remap from="sn0/state" to="/vmecanumrover/bumper_controller0/state" />

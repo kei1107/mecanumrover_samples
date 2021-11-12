@@ -349,7 +349,7 @@ bool MecanumDriveController::setWheelParamsFromUrdf(ros::NodeHandle& root_nh,
   if (lookup_wheel_separation || lookup_wheel_radius)
   {
     // Parse robot description
-    const std::string model_param_name = "robot_description";
+    const std::string model_param_name = "/robot_description";
     bool res = root_nh.hasParam(model_param_name);
     std::string robot_model_str="";
     if(!res || !root_nh.getParam(model_param_name,robot_model_str))
