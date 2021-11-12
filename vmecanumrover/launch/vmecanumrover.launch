@@ -4,14 +4,6 @@
   <arg name="world" default="" />
   <arg name="rvizconfig" default="$(find mecanumrover_samples)/conf.rviz" />  
 
-  <arg name="rover_d" default="0.133" />
-  <arg name="rover_hb" default="0.115" />
-  <arg name="w_rate" default="0.0525" />
-  <arg name="f_l" default="0" />
-  <arg name="f_r" default="1" />
-  <arg name="r_l" default="2" />
-  <arg name="r_r" default="3" />
-
   <param name="robot_description" command="$(find xacro)/xacro $(arg model) --inorder"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -32,52 +24,23 @@
   <node name="controller_spawner" pkg="controller_manager"
         type="spawner" respawn="false"
         output="screen" ns="/vmecanumrover"
-        args="joint_controller0 joint_controller1 joint_controller2 joint_controller3 
+        args=" 
               bumper_controller0 bumper_controller1 bumper_controller2
               bumper_controller3 bumper_controller4 bumper_controller5
               bumper_controller6 bumper_controller7 bumper_controller8
               bumper_controller9 bumper_controller10 bumper_controller11
               joint_state_controller"/>
-
+<!-- mecanum_drive_controller -->
   <!-- <node name="controller_spawner" pkg="controller_manager"
         type="spawner" respawn="false"
         output="screen" ns="/vmecanumrover"
-        args="joint_controller0 joint_controller1 joint_controller2 joint_controller3 
+        args="mecanum_drive_controller 
               bumper_controller0 bumper_controller1 bumper_controller2
               bumper_controller3 bumper_controller4 bumper_controller5
               bumper_controller6 bumper_controller7 bumper_controller8
               bumper_controller9 bumper_controller10 bumper_controller11
               wyrelesscharger_controller
               joint_state_controller"/> -->
-
-  <node name="vmecanum_twist" pkg="mecanumrover_samples" type="vmecanum_twist" output="screen">
-    <param name="gain" value="16.5"/>
-    <param name="rover_d" value="$(arg rover_d)"/>
-    <param name="rover_hb" value="$(arg rover_hb)"/>
-    <param name="f_l" value="$(arg f_l)"/>
-    <param name="f_r" value="$(arg f_r)"/>
-    <param name="r_l" value="$(arg r_l)"/>
-    <param name="r_r" value="$(arg r_r)"/>
-    <remap from="wheel0" to="/vmecanumrover/joint_controller0/command" />
-    <remap from="wheel1" to="/vmecanumrover/joint_controller1/command" />
-    <remap from="wheel2" to="/vmecanumrover/joint_controller2/command" />
-    <remap from="wheel3" to="/vmecanumrover/joint_controller3/command" />
-  </node>
-
-  <node name="vmecanum_odom" pkg="mecanumrover_samples" type="vmecanum_odom" output="screen">
-    <param name="rover_d" value="$(arg rover_d)"/>
-    <param name="rover_hb" value="$(arg rover_hb)"/>
-    <param name="w_rate" value="$(arg w_rate)"/>
-    <param name="f_l" value="$(arg f_l)"/>
-    <param name="f_r" value="$(arg f_r)"/>
-    <param name="r_l" value="$(arg r_l)"/>
-    <param name="r_r" value="$(arg r_r)"/>
-    <remap from="wheel0/state" to="/vmecanumrover/joint_controller0/state" />
-    <remap from="wheel1/state" to="/vmecanumrover/joint_controller1/state" />
-    <remap from="wheel2/state" to="/vmecanumrover/joint_controller2/state" />
-    <remap from="wheel3/state" to="/vmecanumrover/joint_controller3/state" />
-  </node>
-
 
   <node name="vmecanum_sensor" pkg="mecanumrover_samples" type="vmecanum_sensor" output="screen">
     <remap from="sn0/state" to="/vmecanumrover/bumper_controller0/state" />
